@@ -4,31 +4,56 @@ from calendar import monthrange
 
 TEST_events = {
     "mortgage": {
+        "type" : "payments",
         "dayofmonth": 1,
         "amount": 1000,
         "repeate_type" : "monthly",
         "account": "Nationwide"
         },
     "morgate_overpayment": {
+        "type" : "payments",
         "dayofweek" : 1,
         "amount": 70,
         "repeate_type" : "weekly",
         "account": "Nationwide"
         },
     "Council Tax": {
+        "type" : "payments",
         "dayofmonth" : 1,
         "amount": 207,
         "repeate_type" : "monthly",
         "account": "Lloyds"
         },
     "Electricity and Gas": {
+        "type" : "payments",
         "dayofmonth" : 2,
         "amount": 150.91,
         "repeate_type" : "monthly",
         "account": "Nationwide"
-        }}
+        },
+    "Water": {
+        "type" : "payments",
+        "dayofmonth" : 1,
+        "amount": 150,
+        "repeate_type" : "six-monthly",
+        "account": "Nationwide"
+        },
+    "Broadband": {
+        "type" : "payments",
+        "dayofmonth" : 11,
+        "amount": 50,
+        "repeate_type" : "monthly",
+        "account": "Lloyds"
+        },
+    "Drink water" : {
+        "type"  : "reminders",\
+        "timeofday" : "12:00",
+        "repeate_type" : "daily",
+        }
+    
+    }
 
-TEST_date = date(2024, 11, 1)
+TEST_date = date(2024, 12, 1)
 
 class monthly_outgoings:
 
@@ -39,40 +64,79 @@ class monthly_outgoings:
         self.daysinmonth = monthrange(date.year, date.month)[1]
 
         self.regular_outgoings = events
+    
+    def get_action_date(self, dayofmonth):
+
+        scheduled_date = date(self.year, self.month, dayofmonth)
+        dow = scheduled_date.isoweekday()
+        if scheduled_date.isoweekday() in (6,7):
+                
+                offset = ((7 - scheduled_date.isoweekday()) + 1)
+                
+                action_date = dayofmonth + offset
+
+        else:
+
+            action_date = dayofmonth
+
+        return action_date        
+
 
     def create_outgoings_calendar(self):
 
         outgoings_calendar = {}
+        to_do_calendar = {}
 
         outgoings = self.regular_outgoings
-
+        
         for event in outgoings:
 
-            if outgoings[event]["repeate_type"] == "monthly":
+            if outgoings[event]["type"] == "payments":
 
-                if outgoings[event]["dayofmonth"] not in outgoings_calendar.keys():
+                if outgoings[event]["repeate_type"] == "monthly":
+                    
+                    action_date = self.get_action_date(outgoings[event]["dayofmonth"])
 
-                    outgoings_calendar[outgoings[event]["dayofmonth"]] = outgoings[event]["amount"]
+                    if action_date not in outgoings_calendar.keys():
 
-                else:
+                        outgoings_calendar[action_date] = outgoings[event]["amount"]
 
-                    outgoings_calendar[outgoings[event]["dayofmonth"]] = outgoings_calendar[outgoings[event]["dayofmonth"]] + outgoings[event]["amount"]
+                    else:
 
-            elif outgoings[event]["repeate_type"]  == "weekly":
+                        outgoings_calendar[action_date] = outgoings_calendar[action_date] + outgoings[event]["amount"]
 
-                for day in range(1, self.daysinmonth + 1):
-                    print(date(self.year, self.month, day), date(self.year, self.month, day).isoweekday())
-                    if date(self.year, self.month, day).isoweekday() == outgoings[event]["dayofweek"]:
+                elif outgoings[event]["repeate_type"]  == "weekly":
 
-                        if day not in outgoings_calendar.keys():
+                    for day in range(1, self.daysinmonth + 1):
 
-                            outgoings_calendar[day] = outgoings[event]["amount"]
+                        if date(self.year, self.month, day).isoweekday() == outgoings[event]["dayofweek"]:
 
-                        else:
+                            if day not in outgoings_calendar.keys():
 
-                            outgoings_calendar[day] = outgoings_calendar[day] + outgoings[event]["amount"]
+                                outgoings_calendar[day] = outgoings[event]["amount"]
 
-        return outgoings_calendar      
+                            else:
+
+                                outgoings_calendar[day] = outgoings_calendar[day] + outgoings[event]["amount"]
+            else:
+                if outgoings[event]["type"] == "reminders":
+
+                    if outgoings[event]["repeate_type"] == "daily":
+                        
+                        for day in range(1, self.daysinmonth + 1):
+                                
+                                if day not in to_do_calendar.keys():
+    
+                                    to_do_calendar[day] = [event]
+    
+                                else:
+    
+                                    to_do_calendar[day] = to_do_calendar[day].append(event)
+
+
+
+
+        return outgoings_calendar, to_do_calendar     
 
 
 
@@ -83,5 +147,7 @@ class monthly_outgoings:
 
 monthly_expenses = monthly_outgoings(TEST_date, TEST_events)
 
-print(monthly_expenses.create_outgoings_calendar())
+calendars = monthly_expenses.create_outgoings_calendar()
+print(calendars[0])
+print(calendars[1])
         
