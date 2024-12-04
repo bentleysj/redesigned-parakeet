@@ -49,6 +49,16 @@ TEST_events = {
         "type"  : "reminders",\
         "timeofday" : "12:00",
         "repeate_type" : "daily",
+        },
+    "Take vitamins" : {
+        "type"  : "reminders",\
+        "timeofday" : "8:00",
+        "repeate_type" : "daily",
+        },
+    "Complete timesheets" : {
+        "type"  : "reminders",\
+        "dayofweek" : 4,
+        "repeate_type" : "weekly",
         }
     
     }
@@ -81,14 +91,20 @@ class monthly_outgoings:
 
         return action_date        
 
+    # TODO: daily plan
 
     def create_outgoings_calendar(self):
-
+        # forward looking - 
+        # TODO: build a week and month ahead.
+        
         outgoings_calendar = {}
         to_do_calendar = {}
 
         outgoings = self.regular_outgoings
-        
+        # TODO: make actions for weekly and six-monthly
+        # TODO: refactor logic - repeate type > type
+        # TODO: refactor logic - work with dates
+        # TODO: refactor logic - start dates 
         for event in outgoings:
 
             if outgoings[event]["type"] == "payments":
@@ -118,7 +134,7 @@ class monthly_outgoings:
                             else:
 
                                 outgoings_calendar[day] = outgoings_calendar[day] + outgoings[event]["amount"]
-            else:
+            else:   
                 if outgoings[event]["type"] == "reminders":
 
                     if outgoings[event]["repeate_type"] == "daily":
