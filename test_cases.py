@@ -44,17 +44,17 @@ TEST_events = {
         "account": "Lloyds"
         },
     "Drink water" : {
-        "type"  : "reminders",\
+        "type"  : "reminders",
         "timeofday" : "12:00",
         "repeate_type" : "daily",
         },
     "Take vitamins" : {
-        "type"  : "reminders",\
+        "type"  : "reminders",
         "timeofday" : "8:00",
         "repeate_type" : "daily",
         },
     "Complete timesheets" : {
-        "type"  : "reminders",\
+        "type"  : "reminders",
         "dayofweek" : 4,
         "repeate_type" : "weekly",
         }
