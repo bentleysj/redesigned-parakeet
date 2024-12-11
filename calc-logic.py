@@ -127,7 +127,7 @@ class monthly_outgoings:
 
 monthly_expenses = monthly_outgoings(test_cases.TEST_events, test_cases.TEST_date,)
 
-calendars = monthly_expenses.create_outgoings_calendar(calendar_days_to_build=7)
+calendars = monthly_expenses.create_outgoings_calendar(test_cases.TEST_date, calendar_days_to_build=10)
 
 print(monthly_expenses.outgoings_calendar)
 print(monthly_expenses.to_do_calendar)
