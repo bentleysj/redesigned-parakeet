@@ -29,8 +29,6 @@ class monthly_outgoings:
 
         return action_date        
 
-    # TODO: daily plan
-
     def add_to_outgoings(self, date, event): 
 
         amount = self.regular_outgoings[event]["amount"]
@@ -72,35 +70,26 @@ class monthly_outgoings:
         return 0
 
     def create_outgoings_calendar(self, start_date = date.today(), calendar_days_to_build = 30):
-        # forward looking - 
-        # TODO: build a week and month ahead.true
-
-        # days_ahead_to_build = self.calendar_days_to_calc
 
         date_range = [start_date + timedelta(days = i) for i in range(calendar_days_to_build)]   
 
         self.outgoings_calendar = {} 
-        # {date for date in date.range(start_date, start_date + timedelta(days = calendar_days_to_build))}
-        # print(date_range.keys())
-        # outgoings_calendar = {}
         self.to_do_calendar = {} 
-        # {date for date in range(start_date, start_date + timedelta(days = calendar_days_to_build))}
 
         outgoings = self.regular_outgoings
-        # TODO: make actions for weekly and six-monthly
-        # TODO: refactor logic - repeate type > type
-        # TODO: refactor logic - work with dates
-        # TODO: refactor logic - start dates 
+        # TODO: six-monthly
 
         for event in outgoings:
 
             if outgoings[event]["repeate_type"] == "monthly":
 
-                if outgoings[event]["type"] == "payments":
+                scheduled_date = date(self.year, self.month, outgoings[event]["dayofmonth"])
 
-                    scheduled_date = date(self.year, self.month, outgoings[event]["dayofmonth"])
+                if outgoings[event]["weekdays_only"] == True:
                     action_date = self.get_action_date(scheduled_date)
 
+                else:
+                    action_date = scheduled_date
                     self.add_to_calendar(event, action_date)
 
             elif outgoings[event]["repeate_type"]  == "weekly":
@@ -115,9 +104,13 @@ class monthly_outgoings:
                         
                 for day in date_range:
 
-                    self.add_to_calendar(event, day)
+                    if outgoings[event]["weekdays_only"] == False or day.isoweekday() not in (6,7):
 
-        return self.outgoings_calendar, self.to_do_calendar     
+                        self.add_to_calendar(event, day)
+
+        return self.outgoings_calendar, self.to_do_calendar
+    
+    # TODO: daily plan
 
     def get_daily_outgoing(self, date):
 

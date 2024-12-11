@@ -51,11 +51,13 @@ TEST_events = {
         "type"  : "reminders",
         "timeofday" : "12:00",
         "repeate_type" : "daily",
+        "weekdays_only" : False
         },
     "Take vitamins" : {
         "type"  : "reminders",
         "timeofday" : "8:00",
         "repeate_type" : "daily",
+        "weekdays_only" : True
         },
     "Complete timesheets" : {
         "type"  : "reminders",
