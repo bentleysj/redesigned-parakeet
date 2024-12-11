@@ -6,7 +6,8 @@ TEST_events = {
         "dayofmonth": 1,
         "amount": 1000,
         "repeate_type" : "monthly",
-        "account": "Nationwide"
+        "account": "Nationwide",
+        "weekdays_only" : True
         },
     "morgate_overpayment": {
         "type" : "payments",
@@ -27,21 +28,24 @@ TEST_events = {
         "dayofmonth" : 2,
         "amount": 150.91,
         "repeate_type" : "monthly",
-        "account": "Nationwide"
+        "account": "Nationwide",
+        "weekdays_only" : True
         },
     "Water": {
         "type" : "payments",
         "dayofmonth" : 1,
         "amount": 150,
         "repeate_type" : "six-monthly",
-        "account": "Nationwide"
+        "account": "Nationwide",
+        "weekdays_only" : True
         },
     "Broadband": {
         "type" : "payments",
         "dayofmonth" : 11,
         "amount": 50,
         "repeate_type" : "monthly",
-        "account": "Lloyds"
+        "account": "Lloyds",
+        "weekdays_only" : True
         },
     "Drink water" : {
         "type"  : "reminders",
