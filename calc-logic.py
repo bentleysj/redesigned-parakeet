@@ -77,20 +77,31 @@ class monthly_outgoings:
         self.to_do_calendar = {} 
 
         outgoings = self.regular_outgoings
-        # TODO: six-monthly
+        # TODO: six-monthly, yearly, etc. 
+        # TODO: too much nesting - move more into functions
 
         for event in outgoings:
 
             if outgoings[event]["repeate_type"] == "monthly":
 
-                scheduled_date = date(self.year, self.month, outgoings[event]["dayofmonth"])
+                for month_to_build in range(date_range[0].month, date_range[-1].month):
 
-                if outgoings[event]["weekdays_only"] == True:
-                    action_date = self.get_action_date(scheduled_date)
+                    scheduled_date = date(self.year, month_to_build, outgoings[event]["dayofmonth"])
 
-                else:
-                    action_date = scheduled_date
-                    self.add_to_calendar(event, action_date)
+                    if outgoings[event]["weekdays_only"] == True:
+
+                        if action_date in date_range:
+
+                            action_date = self.get_action_date(scheduled_date)
+                        
+
+                    else:
+                        
+                        action_date = scheduled_date
+
+                        if action_date in date_range:
+
+                            self.add_to_calendar(event, action_date)
 
             elif outgoings[event]["repeate_type"]  == "weekly":
 

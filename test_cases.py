@@ -21,7 +21,8 @@ TEST_events = {
         "dayofmonth" : 1,
         "amount": 207,
         "repeate_type" : "monthly",
-        "account": "Lloyds"
+        "account": "Lloyds",
+        "weekdays_only" : True
         },
     "Electricity and Gas": {
         "type" : "payments",
