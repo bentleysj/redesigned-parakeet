@@ -4,11 +4,11 @@ from calendar import monthrange
 import test_cases
 class monthly_outgoings:
 
-    def __init__(self, date, events, start_date = date.today()):
+    def __init__(self, events, start_date = date.today()):
 
-        self.year = date.year
-        self.month = date.month
-        self.daysinmonth = monthrange(date.year, date.month)[1]
+        self.year = start_date.year
+        self.month = start_date.month
+        self.daysinmonth = monthrange(start_date.year, start_date.month)[1]
         # self.calendar_days_to_calc = calendar_days_to_calc
 
         self.regular_outgoings = events
@@ -84,22 +84,19 @@ class monthly_outgoings:
 
             if outgoings[event]["repeate_type"] == "monthly":
 
-                for month_to_build in range(date_range[0].month, date_range[-1].month):
+                for month_to_build in range(date_range[0].month, date_range[-1].month + 1):
 
                     scheduled_date = date(self.year, month_to_build, outgoings[event]["dayofmonth"])
 
                     if outgoings[event]["weekdays_only"] == True:
 
-                        if action_date in date_range:
-
-                            action_date = self.get_action_date(scheduled_date)
+                        action_date = self.get_action_date(scheduled_date)
                         
-
                     else:
                         
                         action_date = scheduled_date
 
-                        if action_date in date_range:
+                    if action_date in date_range:
 
                             self.add_to_calendar(event, action_date)
 
@@ -128,7 +125,7 @@ class monthly_outgoings:
         daily_outgoing = 0
 
 
-monthly_expenses = monthly_outgoings(test_cases.TEST_date, test_cases.TEST_events)
+monthly_expenses = monthly_outgoings(test_cases.TEST_events, test_cases.TEST_date,)
 
 calendars = monthly_expenses.create_outgoings_calendar(calendar_days_to_build=7)
 
