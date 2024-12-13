@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dictionary Display</title>
+</head>
+<body>
+    <h1>Dictionary Contents</h1>
+    <table border="1">
+        <thead>
+            
+            <tr>
+                {% for key, value in data.items() %}
+                <th>{{ key }}</th>
+                {% endfor %}
+            </tr>
+           
+        </thead>
+        <tbody>
+            
+            <tr>
+                {% for key, value in data.items() %}
+                <!-- <td>{{ key }}</td> -->
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>           
+        </tbody>
+    </table>
+</body>
+</html>

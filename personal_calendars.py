@@ -125,9 +125,3 @@ class calendars:
         daily_outgoing = 0
 
 
-personal_calendars = calendars(test_cases.TEST_events, test_cases.TEST_date,)
-
-calendars = personal_calendars.create_calendars(test_cases.TEST_date, calendar_days_to_build=10)
-
-print(personal_calendars.outgoings_calendar)
-print(personal_calendars.to_do_calendar)
