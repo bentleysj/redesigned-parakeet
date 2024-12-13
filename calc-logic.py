@@ -2,7 +2,7 @@ from datetime import date, timedelta
 from calendar import monthrange
 
 import test_cases
-class monthly_outgoings:
+class calendars:
 
     def __init__(self, events, start_date = date.today()):
 
@@ -11,7 +11,7 @@ class monthly_outgoings:
         self.daysinmonth = monthrange(start_date.year, start_date.month)[1]
         # self.calendar_days_to_calc = calendar_days_to_calc
 
-        self.regular_outgoings = events
+        self.scheduled_events = events
     
     def get_action_date(self, scheduled_date):
                              
@@ -31,7 +31,7 @@ class monthly_outgoings:
 
     def add_to_outgoings(self, date, event): 
 
-        amount = self.regular_outgoings[event]["amount"]
+        amount = self.scheduled_events[event]["amount"]
 
         if date not in self.outgoings_calendar.keys():
 
@@ -57,7 +57,7 @@ class monthly_outgoings:
     
     def add_to_calendar(self, event, date):
     
-        event_type = self.regular_outgoings[event]['type']
+        event_type = self.scheduled_events[event]['type']
 
         if event_type == "payments":
               
@@ -69,14 +69,14 @@ class monthly_outgoings:
            
         return 0
 
-    def create_outgoings_calendar(self, start_date = date.today(), calendar_days_to_build = 30):
+    def create_calendars(self, start_date = date.today(), calendar_days_to_build = 30):
 
         date_range = [start_date + timedelta(days = i) for i in range(calendar_days_to_build)]   
 
         self.outgoings_calendar = {} 
         self.to_do_calendar = {} 
 
-        outgoings = self.regular_outgoings
+        outgoings = self.scheduled_events
         # TODO: six-monthly, yearly, etc. 
         # TODO: too much nesting - move more into functions
 
@@ -125,9 +125,9 @@ class monthly_outgoings:
         daily_outgoing = 0
 
 
-monthly_expenses = monthly_outgoings(test_cases.TEST_events, test_cases.TEST_date,)
+personal_calendars = calendars(test_cases.TEST_events, test_cases.TEST_date,)
 
-calendars = monthly_expenses.create_outgoings_calendar(test_cases.TEST_date, calendar_days_to_build=10)
+calendars = personal_calendars.create_calendars(test_cases.TEST_date, calendar_days_to_build=10)
 
-print(monthly_expenses.outgoings_calendar)
-print(monthly_expenses.to_do_calendar)
+print(personal_calendars.outgoings_calendar)
+print(personal_calendars.to_do_calendar)
