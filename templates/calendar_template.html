@@ -20,10 +20,33 @@
             
             <tr>
                 {% for key, value in data.items() %}
-                <!-- <td>{{ key }}</td> -->
-                <td>{{ value }}</td>
+                
+                <td>
+                    <h3>To Do:</h3>
+
+                    {% for rvalue in  value %}
+                           
+                            {{ rvalue}} <br>
+                    
+                    {% endfor %}
+                    <br>
+                </td>
                 {% endfor %}
-            </tr>           
+            </tr>
+
+            <tr>
+                {% for key, value in outgoing.items() %}
+                
+                <td>
+                    <h3>Outgoing:</h3>
+                    {{value}} <br>
+
+
+                    <br>
+                </td>
+                {% endfor %}
+            </tr>        
+                      
         </tbody>
     </table>
 </body>

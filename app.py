@@ -11,7 +11,8 @@ start_date = test_cases.TEST_date
 personal_calendar = personal_calendars.calendars(test_cases.TEST_events, start_date)
 outgoings, to_dos = personal_calendar.create_calendars(start_date, calendar_days_to_build=calendar_days_to_build)
 
-combo_calendar = {}
+ren_personal_calendar = {}
+ren_outgoing_calendar = {}
 dates = [(start_date + timedelta(days=i)) for i in range(calendar_days_to_build)]
 
 for date in dates:
@@ -22,23 +23,18 @@ for date in dates:
         outgoing = 0
 
     if date in to_dos.keys():
-        todo = "\n".join(to_dos[date])
+        # todo = "\n".join(to_dos[date])
+        todo = to_dos[date]
     else:
         todo = "None scheduled \n"
 
-    combo_calendar[date.strftime("%a %d %m")] = {
-f"""
-"To Do:
-{todo}
-"Scheduled Payments: {outgoing}
-"""}
-
-
-
-
+    ren_personal_calendar[date.strftime("%a %d %m")] =  todo
+    ren_outgoing_calendar[date.strftime("%a %d %m")] =  outgoing
+                    # f"Scheduled Payments:" :  outgoing
+    
 @app.route('/')
 
 def show_calendar():
     
-    return render_template('calendar_template.html', data=combo_calendar)
+    return render_template('calendar_template.html', data=ren_personal_calendar, outgoing=ren_outgoing_calendar)
 
