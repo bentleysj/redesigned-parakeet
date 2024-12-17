@@ -6,6 +6,8 @@ class calendars:
 
     def __init__(self, events, start_date = date.today()):
 
+        self.start_date = start_date
+
         self.year = start_date.year
         self.month = start_date.month
         self.daysinmonth = monthrange(start_date.year, start_date.month)[1]
@@ -86,7 +88,11 @@ class calendars:
            
         return 0
 
-    def create_calendars(self, start_date = date.today(), calendar_days_to_build = 30):
+    def create_calendars(self, calendar_days_to_build = 30):
+
+        start_date = self.start_date
+
+        self.calendar_days_to_build = calendar_days_to_build
 
         date_range = [start_date + timedelta(days = i) for i in range(calendar_days_to_build)]   
 
@@ -134,12 +140,67 @@ class calendars:
 
                         self.add_to_calendar(event, day)
 
-        return self.total_outgoings_calendar, self.to_do_calendar, self.outgoings_calendar
+        return (self.total_outgoings_calendar, self.to_do_calendar, self.outgoings_calendar)
     
     # TODO: daily plan
+
+    def create_output_calendar(self, calendars):
+
+        total_outgoings = calendars[0]
+        to_dos = calendars[1]
+        outgoings = calendars[2]
+
+        start_date = self.start_date
+
+        calendar_days_to_build = self.calendar_days_to_build
+
+        ren_personal_calendar = {}
+        ren_outgoing_calendar = {}
+        ren_total_outgoing_calendar = {}
+        dates = [(start_date + timedelta(days=i)) for i in range(calendar_days_to_build)]
+
+        for date in dates:
+
+            if date in total_outgoings.keys():
+                total_outgoing = total_outgoings[date]
+            else:
+                total_outgoing = 0
+
+            if date in to_dos.keys():
+                todo = to_dos[date]
+            else:
+                todo = ["None scheduled."]
+
+            if date in outgoings.keys():
+                outgoing = outgoings[date]
+            else:
+                outgoing = ["None scheduled."]
+
+            ren_personal_calendar[date.strftime("%a %d %m")] =  todo
+            ren_outgoing_calendar[date.strftime("%a %d %m")] =  outgoing
+            ren_total_outgoing_calendar[date.strftime("%a %d %m")] =  total_outgoing
+
+        return ren_personal_calendar, ren_outgoing_calendar, ren_total_outgoing_calendar
+                   
 
     def get_daily_outgoing(self, date):
 
         daily_outgoing = 0
+
+    def update_current_tasks(self, current_actions):
+
+        current_to_do_list = current_actions
+
+        new_to_add = self.to_do_calendar[date.today()]
+        
+        for to_do in new_to_add:
+
+            if to_do not in current_to_do_list:
+
+                current_to_do_list[to_do] = {"created": date.today(),
+                                            "due": date.today(),
+                                            "status": "outstanding"}
+                
+        return current_to_do_list
 
 
