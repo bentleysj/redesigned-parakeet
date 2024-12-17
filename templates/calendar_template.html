@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dictionary Display</title>
+    <title>My first to do app</title>
 </head>
 <body>
-    <h1>Dictionary Contents</h1>
+    <h1>Upcomming Schedule</h1>
     <table border="1">
         <thead>
             
@@ -22,7 +22,7 @@
                 {% for key, value in data.items() %}
                 
                 <td>
-                    <h3>To Do:</h3>
+                    <h4>To Do:</h4>
 
                     {% for rvalue in  value %}
                            
@@ -38,7 +38,7 @@
                 {% for key, value in outgoing.items() %}
                 
                 <td>
-                    <h3>Outgoing:</h3>
+                    <h4>Outgoing:</h4>
                     {{value}} <br>
 
 

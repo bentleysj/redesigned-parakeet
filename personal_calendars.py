@@ -33,25 +33,41 @@ class calendars:
 
         amount = self.scheduled_events[event]["amount"]
 
-        if date not in self.outgoings_calendar.keys():
+        if date not in self.total_outgoings_calendar.keys():
 
-            self.outgoings_calendar[date] = amount
+            self.total_outgoings_calendar[date] = amount
 
         else:
 
-            self.outgoings_calendar[date] = self.outgoings_calendar[date] + amount
+            self.total_outgoings_calendar[date] = self.total_outgoings_calendar[date] + amount
 
         return 0
     
     def add_to_to_do(self, date, event):
-                
-        if date not in self.to_do_calendar.keys():
 
-            self.to_do_calendar[date] = [event]
+        event_type = self.scheduled_events[event]['type']
 
-        else:
+        if event_type == "payments":
 
-            self.to_do_calendar[date].append(event)
+            amount = self.scheduled_events[event]["amount"]
+
+            if date not in self.outgoings_calendar.keys():
+
+                self.outgoings_calendar[date] = [f"{event}: {amount}"]
+
+            else:
+
+                self.outgoings_calendar[date].append(f"{event}: {amount}")
+        
+        elif event_type == "reminders":
+
+            if date not in self.to_do_calendar.keys():
+
+                self.to_do_calendar[date] = [event]
+
+            else:
+
+                self.to_do_calendar[date].append(event)
 
         return 0
     
@@ -61,7 +77,8 @@ class calendars:
 
         if event_type == "payments":
               
-            calendar = self.add_to_outgoings(date, event)
+            self.add_to_outgoings(date, event)
+            self.add_to_to_do(date, event)
         
         elif event_type == "reminders":
 
@@ -73,6 +90,7 @@ class calendars:
 
         date_range = [start_date + timedelta(days = i) for i in range(calendar_days_to_build)]   
 
+        self.total_outgoings_calendar = {} 
         self.outgoings_calendar = {} 
         self.to_do_calendar = {} 
 
@@ -116,7 +134,7 @@ class calendars:
 
                         self.add_to_calendar(event, day)
 
-        return self.outgoings_calendar, self.to_do_calendar
+        return self.total_outgoings_calendar, self.to_do_calendar, self.outgoings_calendar
     
     # TODO: daily plan
 
