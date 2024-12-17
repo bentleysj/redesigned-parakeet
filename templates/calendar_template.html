@@ -10,7 +10,7 @@
         <thead>
             
             <tr>
-                {% for key, value in data.items() %}
+                {% for key, value in to_dos.items() %}
                 <th>{{ key }}</th>
                 {% endfor %}
             </tr>
@@ -19,7 +19,7 @@
         <tbody>
             
             <tr>
-                {% for key, value in data.items() %}
+                {% for key, value in to_dos.items() %}
                 
                 <td>
                     <h4>To Do:</h4>
@@ -33,19 +33,33 @@
                 </td>
                 {% endfor %}
             </tr>
-
+<!--  -->
+            <tr>
+                {% for key, value in toal_outgoing.items() %}
+                
+                <td>
+                    <h4>Scheduled Outgoing Total:</h4>
+                    {{value}} <br>
+                    <br>
+                </td>
+                {% endfor %}
+            </tr>
+            
             <tr>
                 {% for key, value in outgoing.items() %}
                 
                 <td>
-                    <h4>Outgoing:</h4>
-                    {{value}} <br>
+                    <h4>Scheduled Outgoings: </h4>
 
-
+                    {% for rvalue in  value %}
+                           
+                            {{ rvalue}} <br>
+                    
+                    {% endfor %}
                     <br>
                 </td>
                 {% endfor %}
-            </tr>        
+            </tr>
                       
         </tbody>
     </table>

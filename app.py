@@ -24,18 +24,17 @@ for date in dates:
         total_outgoings = 0
 
     if date in to_dos.keys():
-        # todo = "\n".join(to_dos[date])
         todo = to_dos[date]
     else:
-        todo = "None scheduled \n"
+        todo = "None scheduled.\n"
 
     if date in outgoings.keys():
-        # todo = "\n".join(to_dos[date])
         outgoings = outgoings[date]
     else:
-        outgoings = "None scheduled \n"
+        outgoings = "None scheduled.\n"
 
     ren_personal_calendar[date.strftime("%a %d %m")] =  todo
+    ren_outgoing_calendar[date.strftime("%a %d %m")] =  outgoings
     ren_total_outgoing_calendar[date.strftime("%a %d %m")] =  total_outgoings
                    
     
