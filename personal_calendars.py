@@ -32,7 +32,7 @@ class calendars:
         return action_date        
 
     def add_to_outgoings(self, date, event): 
-
+        
         amount = self.scheduled_events[event]["amount"]
 
         if date not in self.total_outgoings_calendar.keys():
@@ -52,14 +52,15 @@ class calendars:
         if event_type == "payments":
 
             amount = self.scheduled_events[event]["amount"]
+            event_name = self.scheduled_events[event]["name"]
 
             if date not in self.outgoings_calendar.keys():
 
-                self.outgoings_calendar[date] = [f"{event}: {amount}"]
+                self.outgoings_calendar[date] = [f"{event_name}: {amount}"]
 
             else:
 
-                self.outgoings_calendar[date].append(f"{event}: {amount}")
+                self.outgoings_calendar[date].append(f"{event_name}: {amount}")
         
         elif event_type == "reminders":
 
@@ -80,7 +81,7 @@ class calendars:
         if event_type == "payments":
               
             self.add_to_outgoings(date, event)
-            self.add_to_to_do(date, event)
+            self.add_to_to_do(date,     event)
         
         elif event_type == "reminders":
 
@@ -167,7 +168,10 @@ class calendars:
                 total_outgoing = 0
 
             if date in to_dos.keys():
+
+                # event_name = self.scheduled_events[todo]["name"]
                 todo = to_dos[date]
+
             else:
                 todo = ["None scheduled."]
 
@@ -182,11 +186,6 @@ class calendars:
 
         return ren_personal_calendar, ren_outgoing_calendar, ren_total_outgoing_calendar
                    
-
-    def get_daily_outgoing(self, date):
-
-        daily_outgoing = 0
-
     def update_current_tasks(self, current_actions):
 
         current_to_do_list = current_actions
