@@ -91,7 +91,7 @@ TEST_outstanding_actions = {
         "due" : date(2024, 12, 1),
         "status": "outstanding"
         },
-    "TODO_S_10" : {
+    "TODO_S_11" : {
         "name"  : "vacuum stairs",
         "created" : date(2024, 11, 30),
         "due": date(2024, 12, 2),
