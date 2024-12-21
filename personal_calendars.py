@@ -17,7 +17,6 @@ class calendars:
         self.scheduled_events = events
     
     def get_action_date(self, scheduled_date):                             
-        dow = scheduled_date.isoweekday()
     
         if scheduled_date.isoweekday() in (6,7):                
                 offset = ((7 - scheduled_date.isoweekday()) + 1)                
@@ -142,8 +141,6 @@ class calendars:
                         self.add_to_calendar(event, day)
 
         return (self.total_outgoings_calendar, self.to_do_calendar, self.outgoings_calendar)
-    
-    # TODO: daily plan
 
     def create_output_calendar(self):
 
@@ -200,6 +197,9 @@ class calendars:
             ouput_task_list = ["None Scheduled."]
     
         for task in self.current_to_do_list:
+            
+            self.current_to_do_list[task]["name"] = self.scheduled_events[task]["name"]
+
             task_name = self.get_event_name(task)
             ouput_task_list.append(task_name)
 

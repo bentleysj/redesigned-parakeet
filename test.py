@@ -27,7 +27,7 @@ assert total_outgoings[test_key_2] == 1277 + 150.91
 assert outgoings[test_key_2] == ['Mortgage : 1000', 'Mortgage overpayment : 70', 'Council Tax : 207', 'Electricity and Gas : 150.91'] 
 assert to_dos[test_key_2] == ['Drink water', 'Take vitamins']
 
-current_tasks = personal_calendar.update_current_tasks(test_cases.TEST_outstanding_actions, tasks_for_date = date(2024,12,2))
+current_tasks = personal_calendar.update_current_tasks(tasks_for_date = date(2024,12,2))
 
 current_task_list = sorted(list(current_tasks.keys()))
 assert current_task_list == sorted(['TODO_R_7','TODO_R_8','TODO_S_10','TODO_S_11'])
