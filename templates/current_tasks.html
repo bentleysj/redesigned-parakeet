@@ -2,12 +2,13 @@
 <html lang="en">
 
 <body>
-    <h1>Currently Outstanding Tasks/h1>
+    <h1>Currently Outstanding Tasks>/h1>
     <table border="1">
         <thead>    
             <tr>
 
                 <th>Task</th>
+                <th>Created</th>
                 <th>Due</th>
                 <th>Status</th>
 
@@ -16,9 +17,17 @@
 
         <tbody>
 
+            {% for key, value in current_todos.items() %}
             <tr>
-                {% for key, value in tasks.items() %}
-
-            <tr>
+                <td>{{ value.name }}</td>
+                <td>{{ value.created }}</td>
+                <td>{{ value.due }}</td>
+                <td>{{ value.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
                     
             
