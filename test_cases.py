@@ -76,26 +76,31 @@ TEST_events = {
         "dayofweek" : 4,
         "repeate_type" : "weekly",
         "max_concurrent_events" : 0
-        }
+        },
+    "TODO_S_10" : {
+        "name"  : "clean bathrooms",
+        "type"  : "reminders",
+        "repeate_type" : "one-off",
+    },
+    "TODO_S_11" : {
+        "name"  : "vacuum stairs",
+        "type"  : "reminders",
+        "repeate_type" : "one-off",
+    }    
     
     }
 
-
 TEST_date = date(2024, 12, 1)
 
-
 TEST_outstanding_actions = {
-    "TODO_S_10" : {
-        "name"  : "clean bathrooms",
+    "TODO_S_10" : {        
         "created" : date(2024, 11, 28),
         "due" : date(2024, 12, 1),
         "status": "outstanding"
         },
     "TODO_S_11" : {
-        "name"  : "vacuum stairs",
         "created" : date(2024, 11, 30),
         "due": date(2024, 12, 2),
         "status" : "outstanding"
         },
-
     }

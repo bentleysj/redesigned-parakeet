@@ -4,9 +4,11 @@ from calendar import monthrange
 import test_cases
 class calendars:
 
-    def __init__(self, events, start_date = date.today()):
+    def __init__(self, events, outstanding_tasks = {}, start_date = date.today()):
 
         self.start_date = start_date
+
+        self.current_to_do_list = outstanding_tasks
 
         self.year = start_date.year
         self.month = start_date.month
@@ -15,7 +17,6 @@ class calendars:
         self.scheduled_events = events
     
     def get_action_date(self, scheduled_date):                             
-        dow = scheduled_date.isoweekday()
     
         if scheduled_date.isoweekday() in (6,7):                
                 offset = ((7 - scheduled_date.isoweekday()) + 1)                
@@ -140,14 +141,12 @@ class calendars:
                         self.add_to_calendar(event, day)
 
         return (self.total_outgoings_calendar, self.to_do_calendar, self.outgoings_calendar)
-    
-    # TODO: daily plan
 
-    def create_output_calendar(self, calendars):
+    def create_output_calendar(self):
 
-        total_outgoings = calendars[0]
-        to_dos = calendars[1]
-        outgoings = calendars[2]
+        total_outgoings = self.total_outgoings_calendar
+        to_dos = self.to_do_calendar
+        outgoings = self.outgoings_calendar
 
         start_date = self.start_date
         calendar_days_to_build = self.calendar_days_to_build
@@ -173,9 +172,9 @@ class calendars:
 
         return ren_personal_calendar, ren_outgoing_calendar, ren_total_outgoing_calendar
                    
-    def update_current_tasks(self, current_actions, tasks_for_date = date.today()):
+    def update_current_tasks(self, tasks_for_date = date.today()):
 
-        current_to_do_list = current_actions
+        current_to_do_list = self.current_to_do_list
         new_to_add = self.to_do_calendar[tasks_for_date]
         
         for to_do in new_to_add:
@@ -186,6 +185,28 @@ class calendars:
                                             "due": date.today(),
                                             "status": "outstanding"}
                 
+        self.current_to_do_list = current_to_do_list
+
         return current_to_do_list
+    
+    def create_output_daily_task(self):
+
+        ouput_task_list = []
+
+        if len(self.current_to_do_list) == 0:
+            ouput_task_list = ["None Scheduled."]
+    
+        for task in self.current_to_do_list:
+            
+            self.current_to_do_list[task]["name"] = self.scheduled_events[task]["name"]
+
+            task_name = self.get_event_name(task)
+            ouput_task_list.append(task_name)
+
+        return ouput_task_list
+
+
+
+            
 
 
