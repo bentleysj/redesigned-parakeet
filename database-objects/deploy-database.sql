@@ -61,3 +61,24 @@ CREATE TABLE task_catalog.CURRENT_TASKS
     CONSTRAINT FK_CURRENTTASK_TASKINSTANCE FOREIGN KEY (TASK_INSTANCE_ID)
     REFERENCES task_catalog.TASK_INSTANCES (ID)
 );
+
+create schema task_users; 
+create table task_users.USERS
+(
+    ID BIGINT IDENTITY(1, 1),
+    USERNAME VARCHAR(255) NOT NULL,
+    PASSWORD VARCHAR(255) NOT NULL,
+    EMAIL VARCHAR(255), 
+    CREATED_AT DATETIME default CURRENT_TIMESTAMP,
+    LAST_UPDATED_AT DATETIME
+);
+
+alter table task_catalog.TASKS
+add column USER_ID BIGINT;
+;
+
+alter table task_catalog.task_instances
+add column USER_ID BIGINT;
+
+alter table task_catalog.CURRENT_TASKS
+add column USER_ID BIGINT;
