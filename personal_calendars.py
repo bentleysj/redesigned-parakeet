@@ -95,7 +95,28 @@ class calendars:
         else:
             event_names = ['None Scheduled.']
 
-        return event_names   
+        return event_names
+    
+    def get_next_occurance(self, event):
+
+        next_occurance = date(1970,1,1)
+
+        if self.scheduled_events[event]["first_occurance"] > self.start_date:
+
+            next_occurance = self.scheduled_events[event]["first_occurance"]
+
+        elif self.scheduled_events[event]["repeat_period"] > 1:
+
+            reference_occurance = max(self.scheduled_events[event]["last_triggered"], self.scheduled_events[event]["first_occurance"])
+
+            if self.scheduled_events[event]["repeat_type"] == "monthly":
+                next_occurance = reference_occurance + timedelta(months = self.scheduled_events[event]["repeat_period"])
+            elif self.scheduled_events[event]["repeat_type"] == "weekly":
+                next_occurance = reference_occurance + timedelta(weeks = self.scheduled_events[event]["repeat_period"])
+            elif self.scheduled_events[event]["repeat_type"] == "daily":
+                next_occurance = reference_occurance + timedelta(days = self.scheduled_events[event]["repeat_period"])
+            
+        return next_occurance
 
     def create_calendars(self, calendar_days_to_build = 30):
 
@@ -112,28 +133,31 @@ class calendars:
         # TODO: too much nesting - move more into functions
 
         for event in outgoings:
-            if outgoings[event]["repeate_type"] == "monthly":
+            if outgoings[event]["repeat_type"] == "monthly":
 
-                for month_to_build in range(date_range[0].month, date_range[-1].month + 1):
-                    scheduled_date = date(self.year, month_to_build, outgoings[event]["dayofmonth"])
+                    for month_to_build in range(date_range[0].month, date_range[-1].month + 1):
 
-                    if outgoings[event]["weekdays_only"] == True:
-                        action_date = self.get_action_date(scheduled_date)
-                        
-                    else:                        
-                        action_date = scheduled_date
+                        if outgoings[event].get("repeat_period",1) > 1:
+                            scheduled_date = self.get_next_occurance(event)
+                        else:                        
+                            scheduled_date = date(self.year, month_to_build, outgoings[event]["dayofmonth"])
 
-                    if action_date in date_range:
+                        if outgoings[event]["weekdays_only"] == True:
+                            action_date = self.get_action_date(scheduled_date)                            
+                        else:                        
+                            action_date = scheduled_date
+
+                        if action_date in date_range:
                             self.add_to_calendar(event, action_date)
 
-            elif outgoings[event]["repeate_type"]  == "weekly":
+            elif outgoings[event]["repeat_type"]  == "weekly":
 
                     for day in date_range:
 
                         if day.isoweekday() == outgoings[event]["dayofweek"]:
                             self.add_to_calendar(event, day)
 
-            elif outgoings[event]["repeate_type"] == "daily":
+            elif outgoings[event]["repeat_type"] == "daily":
                         
                 for day in date_range:
 
@@ -205,8 +229,5 @@ class calendars:
 
         return ouput_task_list
 
-
-
-            
 
 
