@@ -33,7 +33,7 @@ TEST_events = {
         "dayofmonth" : 2,
         "amount": 150.91,
         "repeate_type" : "monthly",
-        "account": "Nationwide",
+        "account": "Nationwide",    
         "weekdays_only" : True
         },
     "PAY_R_5": {
