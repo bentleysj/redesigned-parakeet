@@ -1,0 +1,28 @@
+To connect your Azure App Service to an Azure SQL Database, follow these steps:
+
+    Create a managed identity for the App Service:
+    
+    Navigate to your App Service in the Azure portal.
+    Select Identity from the left navigation.
+    Turn System assigned managed identity to On.
+    Add a user to the Azure SQL Database:
+    
+    Use SQL commands to create a user and role for passwordless access:
+    
+
+CREATE USER [<web-app-name>] FROM EXTERNAL PROVIDER
+ALTER ROLE db_datareader ADD MEMBER [<web-app-name>]
+ALTER ROLE db_datawriter ADD MEMBER [<web-app-name>]
+
+Configure the App Service with a connection string:
+
+    Use the az webapp config appsettings set command to add an app setting for the connection string:
+
+        az webapp config appsettings set \
+        --resource-group <resource-group-name> \
+        --name <web-app-name> \
+        --settings AZURE_SQL_CONNECTIONSTRING="<connection-string>"
+
+    https://learn.microsoft.com/en-us/azure/azure-sql/database/azure-sql-javascript-mssql-quickstart?view=azuresql&wt.mc_id=knwlserAPI_inproduct_sdkextention&tabs=passwordless%2Cservice-connector%2Cportal#connect-the-app-service-to-azure-sql-database
+    https://learn.microsoft.com/en-us/azure/azure-sql/database/azure-sql-python-quickstart?view=azuresql&tabs=windows%2Csql-inter
+    
