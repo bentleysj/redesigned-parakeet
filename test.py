@@ -39,17 +39,23 @@ check_output = sorted(['Drink water', 'Take vitamins', 'vacuum stairs', 'clean b
 assert output_daily_task == check_output
 
 import user_catalog
-# case sensitivity
-user_catalog_objects = user_catalog.objects_from_database('dev', 'bentley')
-user_catalog_objects.set_user_user_id()
-
-assert user_catalog_objects.user_id == 1
 
 # set for future tests
-user_catalog_objects = user_catalog.objects_from_database('dev', 'TESTER')
+user_catalog_objects = user_catalog.user_catalog('dev', 'TESTER')
 user_catalog_objects.set_user_user_id()
 
 assert user_catalog_objects.user_id == 2
+
+user_catalog_objects.delete_test_data(2)
+
+for event in test_cases.TEST_events:
+    user_catalog_objects.add_to_catalog(test_cases.TEST_events[event])
+
+reminders = user_catalog_objects.fetch_catalog('reminders')
+payments = user_catalog_objects.fetch_catalog('payments')
+
+assert len(reminders) == 5
+assert len(payments) == 6
 
 print("yeah, ok")
 
