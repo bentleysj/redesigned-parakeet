@@ -18,7 +18,7 @@ class user_catalog:
         self.server   = os.getenv('SERVER')
         self.database = os.getenv('DATABASE')        
 
-    def fetch_data_from_sql_server(self, query, update = False):
+    def fetch_data_from_sql_server(self, query, query_type = 'select'):
                 
         username = self.username
         password = self.password
@@ -35,16 +35,22 @@ class user_catalog:
 
         conn = pyodbc.connect(conn_str)
         cursor = conn.cursor()
-        cursor.execute(query)
 
-        if update == True:
-            conn.commit()
+        
+        
+        if query_type == 'insert':    
+            cursor.execute(query)
+            cursor.execute("SELECT SCOPE_IDENTITY()")
+            new_id = cursor.fetchone()[0]
+            conn.commit()  
             cursor.close()
+
             conn.close()
-            return 0
+
+            return new_id
         
-        else:
-        
+        elif query_type == 'select':
+            cursor.execute(query)
             rows = cursor.fetchall()
             columns = [column[0] for column in cursor.description]
             result = [dict(zip(columns, row)) for row in rows]
@@ -52,6 +58,14 @@ class user_catalog:
             conn.close()
 
             return result
+        
+        else:
+            cursor.execute(query)
+            conn.commit()  
+            cursor.close()
+            conn.close()
+
+            return 0
 
     def set_user_user_id(self):
 
@@ -175,11 +189,12 @@ class user_catalog:
                     ,{amount}
                     ,'{account}'
                     );  
+                    
                 """
         
-        self.fetch_data_from_sql_server(query, update = True)
+        new_event_id = self.fetch_data_from_sql_server(query, 'insert')
 
-        return 0
+        return new_event_id
     
     def delete_test_data(self, test_user_id):
 
@@ -188,7 +203,7 @@ class user_catalog:
                     where USER_ID = {test_user_id}
                 """
         
-        self.fetch_data_from_sql_server(query, update = True)
+        self.fetch_data_from_sql_server(query, 'delete')
 
         return 0
 
@@ -209,6 +224,20 @@ class user_catalog:
         data = self.fetch_data_from_sql_server(query)
 
         return data
+    
+    def create_event_instance(self, event_id, trigger_at = datetime.now()):
+
+        pass
+
+    def create_one_off_event(self, event, trigger_at = datetime.now()):
+        
+        event_id = self.add_to_catalog(event)
+
+        self.create_event_instance(event_id, trigger_at)
+
+        return f'{event_id} created'
+
+
 
 
 

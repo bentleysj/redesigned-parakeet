@@ -49,13 +49,24 @@ assert user_catalog_objects.user_id == 2
 user_catalog_objects.delete_test_data(2)
 
 for event in test_cases.TEST_events:
-    user_catalog_objects.add_to_catalog(test_cases.TEST_events[event])
+    event_id = user_catalog_objects.add_to_catalog(test_cases.TEST_events[event])
+
 
 reminders = user_catalog_objects.fetch_catalog('reminders')
 payments = user_catalog_objects.fetch_catalog('payments')
 
 assert len(reminders) == 5
 assert len(payments) == 6
+
+test_event = {
+    "name" : "learn portuguese",
+    "type" : "reminder",
+    "task_details" : "test",
+    "repeat_type" : "one-off",
+}
+
+new_event_id = user_catalog_objects.create_one_off_event(test_event)
+print(new_event_id)
 
 print("yeah, ok")
 
