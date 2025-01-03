@@ -1,1 +1,34 @@
--- insert into 
+insert into 
+TASK_USERS.USERS
+(
+    USERNAME,
+    PASSWORD,
+    EMAIL,
+    CREATED_AT,
+    LAST_UPDATED_AT
+)
+values
+(
+    'BENTLEY',
+    'this_will_be_replaced',
+    'throw@away',
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+);
+insert into 
+TASK_USERS.USERS
+(
+    USERNAME,
+    PASSWORD,
+    EMAIL,
+    CREATED_AT,
+    LAST_UPDATED_AT
+)
+values
+(
+    'TESTER',
+    'this_will_be_replaced',
+    'throw@away',
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+);

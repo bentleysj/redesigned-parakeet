@@ -4,8 +4,11 @@ import os
 
 class objects_from_database:
     def __init__(self, instance, app_username):
+
+        self.app_username = app_username
+
         if instance == 'dev':
-            load_dotenv('dev.env')
+            load_dotenv('dev.env', override=True)
         else:
             exit()
         
@@ -40,23 +43,23 @@ class objects_from_database:
 
         return result
 
-def set_user_user_id(self):
+    def set_user_user_id(self):
 
-    app_user = self.app_user
+        app_username = self.app_username
 
-    query = f"""
-                SELECT 
-                    id
-                FROM 
-                    catalog_users.users 
-                WHERE 
-                    username = '{app_user}'
-            """
-    
-    data = self.fetch_data_from_sql_server(query)
+        query = f"""
+                    SELECT 
+                        id
+                    FROM 
+                        TASK_USERS.USERS
+                    WHERE 
+                        username = '{app_username}'
+                """
+        
+        data = self.fetch_data_from_sql_server(query)
 
-    user_id = data[0]['id']
+        user_id = data[0]['id']
 
-    self.user_id = user_id
-    
-    return 0
+        self.user_id = user_id
+        
+        return 0

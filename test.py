@@ -38,3 +38,18 @@ output_daily_task = sorted(personal_calendar.create_output_daily_task())
 check_output = sorted(['Drink water', 'Take vitamins', 'vacuum stairs', 'clean bathrooms'])
 assert output_daily_task == check_output
 
+import user_catalog
+# case sensitivity
+user_catalog_objects = user_catalog.objects_from_database('dev', 'bentley')
+user_catalog_objects.set_user_user_id()
+
+assert user_catalog_objects.user_id == 1
+
+# set for future tests
+user_catalog_objects = user_catalog.objects_from_database('dev', 'TESTER')
+user_catalog_objects.set_user_user_id()
+
+assert user_catalog_objects.user_id == 2
+
+print("yeah, ok")
+
