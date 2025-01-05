@@ -1,4 +1,3 @@
-personal_calendars
-test_cases
-datetime
-flask
+Flask==2.1.1
+python-dotenv==0.20.0
+pyodbc==4.0.32
