@@ -65,8 +65,13 @@ test_event = {
     "repeat_type" : "one-off",
 }
 
-new_event_id = user_catalog_objects.create_one_off_event(test_event)
-print(new_event_id)
+event_created_dialog = user_catalog_objects.create_one_off_event(test_event)
+print(event_created_dialog)
 
+new_event_id = event_created_dialog.split(" ")[1]
+event_instance_id = event_created_dialog.split(" ")[-2]
+
+new_event_instance = user_catalog_objects.create_event_instance(reminders[-1].get('EVENT_ID')) 
+print(new_event_instance)
 print("yeah, ok")
 

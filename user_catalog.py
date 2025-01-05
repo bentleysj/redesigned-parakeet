@@ -199,6 +199,13 @@ class user_catalog:
     def delete_test_data(self, test_user_id):
 
         query = f"""
+                    delete from TASK_CATALOG.TASK_INSTANCES
+                    where USER_ID = {test_user_id}
+                """
+        
+        self.fetch_data_from_sql_server(query, 'delete')
+
+        query = f"""
                     delete from TASK_CATALOG.TASKS
                     where USER_ID = {test_user_id}
                 """
@@ -225,17 +232,75 @@ class user_catalog:
 
         return data
     
+    def get_event_details(self, event_id):
+
+        user_id = self.user_id
+
+        query = f"""
+                    SELECT
+                        *
+                    FROM 
+                        TASK_CATALOG.TASKS
+                    WHERE 
+                        USER_ID = {user_id}
+                        AND EVENT_ID = {event_id}
+                """
+        
+        data = self.fetch_data_from_sql_server(query, 'select')
+
+        return data
+    
     def create_event_instance(self, event_id, trigger_at = datetime.now()):
 
-        pass
+        event_details = self.get_event_details(event_id)[0]
+
+        user_id = self.user_id
+        event_id = event_details.get('EVENT_ID')
+
+        if trigger_at <= datetime.now():
+            status = 'ACTIVE'
+        elif trigger_at > datetime.now():
+            status = 'PENDING'
+        
+        created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        finished_at = 'NULL'
+        last_updated = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        active = 1
+        
+        query = f"""
+                    insert into TASK_CATALOG.TASK_INSTANCES
+                    (
+                        USER_ID
+                        ,EVENT_ID
+                        ,STATUS
+                        ,CREATED
+                        ,FINISHED_AT
+                        ,LAST_UPDATED_AT
+                        ,ACTIVE
+                    )
+                    values
+                    (
+                        {user_id}
+                        ,{event_id}
+                        ,'{status}'
+                        ,'{created}'
+                        ,{finished_at}
+                        ,'{last_updated}'
+                        ,{active}
+                    );
+                """
+        
+        event_instance_id = self.fetch_data_from_sql_server(query, 'insert')
+
+        return event_instance_id
 
     def create_one_off_event(self, event, trigger_at = datetime.now()):
         
         event_id = self.add_to_catalog(event)
 
-        self.create_event_instance(event_id, trigger_at)
+        event_instance_id = self.create_event_instance(event_id, trigger_at)
 
-        return f'{event_id} created'
+        return f'Event {event_id} added to catalog, instance: {event_instance_id} created'
 
 
 
