@@ -38,10 +38,10 @@ jobs:
 
     - name: Set up environment variables
       run: |
-        echo "USERNAME=${{ secrets.SQL_SERVER_USERNAME }}" >> $GITHUB_ENV
-        echo "PASSWORD=${{ secrets.SQL_SERVER_PASSWORD }}" >> $GITHUB_ENV
-        echo "SERVER=${{ secrets.SQL_SERVER }}" >> $GITHUB_ENV
-        echo "DATABASE=${{ secrets.SQL_SERVER_DATABASE }}" >> $GITHUB_ENV
+        echo "SQL_SERVER_USERNAME=${{ secrets.SQL_SERVER_USERNAME }}" >> $GITHUB_ENV
+        echo "SQL_SERVER_PASSWORD=${{ secrets.SQL_SERVER_PASSWORD }}" >> $GITHUB_ENV
+        echo "SQL_SERVER=${{ secrets.SQL_SERVER }}" >> $GITHUB_ENV
+        echo "SQL_SERVER_DATABASE=${{ secrets.SQL_SERVER_DATABASE }}" >> $GITHUB_ENV
 
 
     - name: Install ODBC Driver 18 for SQL Server
