@@ -36,6 +36,14 @@ jobs:
         python -m pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+    - name: Set up environment variables
+      run: |
+        echo "USERNAME=${{ secrets.SQL_SERVER_USERNAME }}" >> $GITHUB_ENV
+        echo "PASSWORD=${{ secrets.SQL_SERVER_PASSWORD }}" >> $GITHUB_ENV
+        echo "SERVER=${{ secrets.SQL_SERVER }}" >> $GITHUB_ENV
+        echo "DATABASE=${{ secrets.SQL_SERVER_DATABASE }}" >> $GITHUB_ENV
+
+
     - name: Install ODBC Driver 18 for SQL Server
       run: |
         curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -

@@ -13,10 +13,10 @@ class user_catalog:
         else:
             exit()
         
-        self.username = os.getenv('USERNAME')
-        self.password = os.getenv('PASSWORD')
-        self.server   = os.getenv('SERVER')
-        self.database = os.getenv('DATABASE')        
+        self.username = os.getenv('SQL_SERVER_USERNAME')
+        self.password = os.getenv('SQL_SERVER_PASSWORD')
+        self.server   = os.getenv('SQL_SERVER')
+        self.database = os.getenv('SQL_SERVER_DATABASE')        
 
     def fetch_data_from_sql_server(self, query, query_type = 'select'):
                 
