@@ -1,0 +1,4 @@
+repeat periods:
+* if > 0:
+    check reoccurance in range. DONE
+* check for multiple apperances.
