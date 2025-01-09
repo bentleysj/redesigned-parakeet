@@ -1,6 +1,0 @@
-SERVER = "this"
-DATABASE = "that" 
-USER = ""
-PASSWORD = ""
-
-

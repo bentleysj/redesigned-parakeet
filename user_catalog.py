@@ -19,7 +19,9 @@ class user_catalog:
         self.database = os.getenv('SQL_SERVER_DATABASE')        
 
     def fetch_data_from_sql_server(self, query, query_type = 'select'):
-                
+
+        # TODO: Not a fan of differnt return types from a function. 
+
         username = self.username
         password = self.password
         server   = self.server
@@ -33,39 +35,45 @@ class user_catalog:
             f"PWD={password}"
         )
 
-        conn = pyodbc.connect(conn_str)
-        cursor = conn.cursor()
+        try:
+            conn = pyodbc.connect(conn_str)
+            cursor = conn.cursor()
+
+        except Exception as e:
+            raise(f'Error connecting to SQL Server: {e}, conn_str: {conn_str}, query: {query}')    
+                             
+        try:
+            if query_type == 'insert':                
+                cursor.execute(query)
+                cursor.execute("SELECT SCOPE_IDENTITY()")                        
+                new_id = cursor.fetchone()[0]
+                conn.commit()  
+                cursor.close()      
+
+                return new_id
+        
+            elif query_type == 'select':                
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                columns = [column[0] for column in cursor.description]
+                result = [dict(zip(columns, row)) for row in rows]
+                cursor.close()
+                conn.close()
+
+                return result
+            
+            else:
+                cursor.execute(query)
+                conn.commit()  
+                cursor.close()
+                conn.close()
+
+                return 0
+
+        except Exception as e:
+            raise(f'Error connecting to SQL Server: {e}, conn_str: {conn_str}, query: {query}')     
 
         
-        
-        if query_type == 'insert':    
-            cursor.execute(query)
-            cursor.execute("SELECT SCOPE_IDENTITY()")
-            new_id = cursor.fetchone()[0]
-            conn.commit()  
-            cursor.close()
-
-            conn.close()
-
-            return new_id
-        
-        elif query_type == 'select':
-            cursor.execute(query)
-            rows = cursor.fetchall()
-            columns = [column[0] for column in cursor.description]
-            result = [dict(zip(columns, row)) for row in rows]
-            cursor.close()
-            conn.close()
-
-            return result
-        
-        else:
-            cursor.execute(query)
-            conn.commit()  
-            cursor.close()
-            conn.close()
-
-            return 0
 
     def set_user_user_id(self):
 

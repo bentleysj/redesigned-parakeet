@@ -2,6 +2,12 @@ from datetime import date, timedelta
 from calendar import monthrange
 
 import test_cases
+
+def add_months(initial_date, months_to_add):
+    new_date = date(initial_date.year + (initial_date.month + months_to_add - 1) // 12,
+                        (initial_date.month + months_to_add - 1) % 12 + 1,
+                        initial_date.day)
+    return new_date
 class calendars:
 
     def __init__(self, events, outstanding_tasks = {}, start_date = date.today()):
@@ -110,7 +116,8 @@ class calendars:
             reference_occurance = max(self.scheduled_events[event]["last_triggered"], self.scheduled_events[event]["first_occurance"])
 
             if self.scheduled_events[event]["repeat_type"] == "monthly":
-                next_occurance = reference_occurance + timedelta(months = self.scheduled_events[event]["repeat_period"])
+                # next_occurance = reference_occurance + timedelta(months = self.scheduled_events[event]["repeat_period"])
+                next_occurance = add_months(reference_occurance, self.scheduled_events[event]["repeat_period"])
             elif self.scheduled_events[event]["repeat_type"] == "weekly":
                 next_occurance = reference_occurance + timedelta(weeks = self.scheduled_events[event]["repeat_period"])
             elif self.scheduled_events[event]["repeat_type"] == "daily":
